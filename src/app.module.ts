@@ -1,6 +1,8 @@
-import { Module, ParseBoolPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApiController } from './api.controller';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true, //Poner en false en producción
     }),
+    ProductsModule,
   ],
+  controllers: [ApiController],
 })
 export class AppModule {}
