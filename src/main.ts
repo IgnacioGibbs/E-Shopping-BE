@@ -28,9 +28,6 @@ async function bootstrap() {
   });
 
   await app.listen(process.env.PORT || 3000, '0.0.0.0');
-  Logger.log(
-    `App listening on port ${process.env.SERVER_PORT}`,
-    await app.getUrl(),
-  );
+  Logger.log(`App listening on port ${process.env.PORT}`, await app.getUrl());
 }
 bootstrap();
