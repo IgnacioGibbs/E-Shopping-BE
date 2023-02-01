@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiController } from './api.controller';
 import { ProductsModule } from './products/product.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProductsModule } from './products/product.module';
       synchronize: true, //Poner en false en producción
     }),
     ProductsModule,
+    CommonModule,
   ],
   controllers: [ApiController],
 })

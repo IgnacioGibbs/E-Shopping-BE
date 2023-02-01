@@ -24,7 +24,6 @@ export class CreateProductDto {
 
   @IsString()
   @IsOptional()
-  @Max(1000)
   description?: string;
 
   @IsString()
