@@ -64,8 +64,21 @@ export class ProductService {
     return product;
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    const product = await this.productRepository.preload({
+      id: id,
+      ...updateProductDto,
+    });
+
+    if (!product) {
+      throw new NotFoundException(`Product with id #${id} not found`);
+    }
+
+    try {
+      return await this.productRepository.save(product);
+    } catch (error) {
+      this.handleDBException(error);
+    }
   }
 
   async remove(id: string) {
@@ -75,13 +88,23 @@ export class ProductService {
   }
 
   private handleDBException(error: any) {
-    if (error.code === '23505') {
-      throw new BadRequestException('Error creating product', error.detail);
+    switch (error.code) {
+      case '22P02':
+        throw new BadRequestException('Invalid UUID', error.detail);
+      case '23502':
+        throw new BadRequestException('Error updating product', error.detail);
+      case '23503':
+        throw new BadRequestException('Error deleting product', error.detail);
+      case '23505':
+        throw new BadRequestException('Error creating product', error.detail);
+      case '23514':
+        throw new BadRequestException('Error creating product', error.detail);
+      default:
+        this.logger.error(error);
+        throw new InternalServerErrorException(
+          'Unexpected error - Check logs',
+          error.detail,
+        );
     }
-    this.logger.error(error);
-    throw new InternalServerErrorException(
-      'Unexpected error - Check logs',
-      error.detail,
-    );
   }
 }

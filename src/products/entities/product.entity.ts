@@ -32,17 +32,30 @@ export class Product {
   @Column('text')
   gender: string;
 
+  @Column('text', { array: true, default: () => "'{}'" })
+  tags: string[];
+
   @BeforeInsert()
-  async generateSlug() {
+  async checkSlugInsert() {
     if (this.title) {
       this.slug = this.title;
     }
 
     this.slug = this.title
       .toLowerCase()
-      .replace(/ /g, '-')
+      .replace(/ /g, '_')
       .replace(/[^\w-]+/g, '');
   }
 
-  // @BeforeUpdate()
+  @BeforeUpdate()
+  async checkSlugUpdate() {
+    if (this.title) {
+      this.slug = this.title;
+    }
+
+    this.slug = this.title
+      .toLowerCase()
+      .replace(/ /g, '_')
+      .replace(/[^\w-]+/g, '');
+  }
 }
