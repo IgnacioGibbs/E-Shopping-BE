@@ -5,10 +5,14 @@ import { ApiController } from './api.controller';
 import { ProductsModule } from './products/product.module';
 import { CommonModule } from './common/common.module';
 import { SeedModule } from './seed/seed.module';
+import { FilesModule } from './files/files.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({}),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -22,6 +26,8 @@ import { SeedModule } from './seed/seed.module';
     ProductsModule,
     CommonModule,
     SeedModule,
+    FilesModule,
+    CloudinaryModule,
   ],
   controllers: [ApiController],
 })
