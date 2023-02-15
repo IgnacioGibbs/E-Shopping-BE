@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -38,14 +38,8 @@ export class User {
   @Column('text', { nullable: true })
   postalCode: string;
 
-  @Column('text', { nullable: true })
+  @Column('text', { nullable: true, default: 'default-avatar.png' })
   avatar: string;
-
-  @Column('text', { nullable: true })
-  description: string;
-
-  @Column('text', { nullable: true })
-  facebook: string;
 
   @Column('text', { nullable: true })
   instagram: string;
@@ -61,4 +55,9 @@ export class User {
 
   @Column('text', { array: true, default: ['user'] })
   roles: string[];
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 }

@@ -6,16 +6,19 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { CreateUserDto, LoginUserDto } from './dto';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
   async create(createUserDto: CreateUserDto) {
     try {
@@ -27,7 +30,14 @@ export class AuthService {
       });
       await this.userRepository.save(user);
       delete user.password;
-      return user;
+      return {
+        ...user,
+        token: this.getJwtToken({
+          id: user.id,
+          email: user.email,
+          roles: user.roles,
+        }),
+      };
     } catch (error) {
       Logger.error(error);
       this.handleDBError(error);
@@ -40,7 +50,7 @@ export class AuthService {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        select: ['id', 'email', 'password'],
+        select: ['id', 'email', 'password', 'roles'],
       });
 
       if (!user) throw new UnauthorizedException('Invalid email credentials');
@@ -50,11 +60,27 @@ export class AuthService {
       if (!isPasswordValid)
         throw new UnauthorizedException('Invalid password credentials');
 
-      return user;
+      delete user.password;
+      return {
+        ...user,
+        token: this.getJwtToken({
+          id: user.id,
+          email: user.email,
+          roles: user.roles,
+        }),
+      };
     } catch (error) {
       Logger.error(error);
       this.handleDBError(error);
     }
+  }
+
+  private getJwtToken(payload: JwtPayload) {
+    const token = this.jwtService.sign(payload);
+    return {
+      token,
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    };
   }
 
   private handleDBError(error: any): never {
