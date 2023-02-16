@@ -32,10 +32,8 @@ export class AuthService {
       delete user.password;
       return {
         ...user,
-        token: this.getJwtToken({
+        jwt: this.getJwtToken({
           id: user.id,
-          email: user.email,
-          roles: user.roles,
         }),
       };
     } catch (error) {
@@ -50,7 +48,7 @@ export class AuthService {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        select: ['id', 'email', 'password', 'roles'],
+        select: ['id', 'password'],
       });
 
       if (!user) throw new UnauthorizedException('Invalid email credentials');
@@ -61,12 +59,11 @@ export class AuthService {
         throw new UnauthorizedException('Invalid password credentials');
 
       delete user.password;
+
       return {
         ...user,
-        token: this.getJwtToken({
+        jwt: this.getJwtToken({
           id: user.id,
-          email: user.email,
-          roles: user.roles,
         }),
       };
     } catch (error) {
@@ -74,6 +71,10 @@ export class AuthService {
       this.handleDBError(error);
     }
   }
+
+  // private async validateUser(payload: JwtPayload): Promise<User> {
+  //   return await this.userRepository.findOne(payload.id);
+  // }
 
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
