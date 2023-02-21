@@ -62,7 +62,7 @@ export class CreateUserDto {
   country?: string;
 
   @IsString()
-  @IsPostalCode('AR')
+  @IsPostalCode('any')
   @IsOptional()
   postalCode?: string;
 

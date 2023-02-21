@@ -72,10 +72,6 @@ export class AuthService {
     }
   }
 
-  // private async validateUser(payload: JwtPayload): Promise<User> {
-  //   return await this.userRepository.findOne(payload.id);
-  // }
-
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return {

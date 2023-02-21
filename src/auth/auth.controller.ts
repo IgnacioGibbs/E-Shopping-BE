@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser, RoleProtected } from 'src/auth/decorators';
+import { Auth, GetUser, RoleProtected } from 'src/auth/decorators';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { User } from './entities/user.entity';
@@ -47,6 +47,16 @@ export class AuthController {
       ok: true,
       user: user,
       message: 'test2 message',
+    };
+  }
+
+  @Get('test3')
+  @Auth(ValidRoles.USER)
+  test3(@GetUser() user: User) {
+    return {
+      ok: true,
+      user: user,
+      message: 'test3 message',
     };
   }
 }
