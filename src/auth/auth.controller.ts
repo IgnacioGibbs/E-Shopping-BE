@@ -28,35 +28,9 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
-  @Get('test')
-  @UseGuards(AuthGuard())
-  test(@GetUser() user: User, @GetUser('id', ParseUUIDPipe) userData: string) {
-    return {
-      ok: true,
-      user: user,
-      userId: userData,
-      message: 'test message',
-    };
-  }
-
-  @Get('test2')
-  @RoleProtected(ValidRoles.ADMIN)
-  @UseGuards(AuthGuard(), UserRoleGuard)
-  test2(@GetUser() user: User) {
-    return {
-      ok: true,
-      user: user,
-      message: 'test2 message',
-    };
-  }
-
-  @Get('test3')
-  @Auth(ValidRoles.USER)
-  test3(@GetUser() user: User) {
-    return {
-      ok: true,
-      user: user,
-      message: 'test3 message',
-    };
+  @Get('check-status')
+  @Auth()
+  checkAuthStatus(@GetUser('id') id: string) {
+    return this.authService.checkAuth(id);
   }
 }

@@ -24,6 +24,7 @@ interface SeedUser {
   dni: number;
   birthdate: Date;
   roles: string[];
+  isActive?: boolean;
 }
 interface SeedData {
   users: SeedUser[];
@@ -40,6 +41,7 @@ export const initialData: SeedData = {
       dni: 0,
       birthdate: new Date(),
       roles: ['admin'],
+      isActive: true,
     },
     {
       email: 'user@user.com',
@@ -49,6 +51,7 @@ export const initialData: SeedData = {
       dni: 1,
       birthdate: new Date(),
       roles: ['user'],
+      isActive: true,
     },
   ],
   products: [

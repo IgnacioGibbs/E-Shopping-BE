@@ -65,7 +65,7 @@ export class User {
   product: Product;
 
   @Column('bool', { default: false })
-  isActivated: boolean;
+  isActive: boolean;
 
   @Column('date', { default: () => 'CURRENT_TIMESTAMP', nullable: true })
   createdAt: Date;

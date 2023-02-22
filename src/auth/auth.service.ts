@@ -72,6 +72,24 @@ export class AuthService {
     }
   }
 
+  async checkAuth(id: string) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id },
+        select: ['id', 'email', 'roles'],
+      });
+      return {
+        ...user,
+        jwt: this.getJwtToken({
+          id: user.id,
+        }),
+      };
+    } catch (error) {
+      Logger.error(error);
+      this.handleDBError(error);
+    }
+  }
+
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return {
