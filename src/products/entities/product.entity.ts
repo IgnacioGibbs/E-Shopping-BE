@@ -37,6 +37,18 @@ export class Product {
   @Column('text', { array: true, default: () => "'{}'" })
   tags: string[];
 
+  @Column('boolean', { nullable: true, default: true })
+  isActive: boolean;
+
+  @Column('date', { default: () => 'CURRENT_TIMESTAMP', nullable: true })
+  createdAt: Date;
+
+  @Column('date', { nullable: true })
+  updatedAt: Date;
+
+  @Column('date', { nullable: true })
+  deletedAt: Date;
+
   @OneToMany(() => ProductImage, (productImage) => productImage.product, {
     cascade: true,
     eager: true,
@@ -65,5 +77,8 @@ export class Product {
       .toLowerCase()
       .replace(/ /g, '_')
       .replace(/[^\w-]+/g, '');
+  }
+  async updateDate() {
+    this.updatedAt = new Date();
   }
 }

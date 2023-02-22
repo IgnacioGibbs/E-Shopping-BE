@@ -47,6 +47,7 @@ export class ProductService {
       const products = await this.productRepository.find({
         take: limit,
         skip: offset,
+        where: { isActive: true },
         relations: ['images'],
       });
 
@@ -63,7 +64,10 @@ export class ProductService {
     let product: Product;
 
     if (isUUID(term)) {
-      product = await this.productRepository.findOneBy({ id: term });
+      product = await this.productRepository.findOneBy({
+        id: term,
+        isActive: true,
+      });
     } else {
       const queryBuilder = this.productRepository.createQueryBuilder('prod');
       product = await queryBuilder
@@ -128,7 +132,15 @@ export class ProductService {
 
   async remove(id: string) {
     const product = await this.findOne(id);
-    await this.productRepository.remove(product);
+    product.isActive = false;
+    product.deletedAt = new Date();
+    await this.productRepository.save(product);
+    const image = await this.productImageRepository.findOne({
+      where: { product: { id } },
+    });
+    image.isActive = false;
+    image.deletedAt = new Date();
+    await this.productImageRepository.save(image);
     return { message: 'Product deleted' };
   }
 
