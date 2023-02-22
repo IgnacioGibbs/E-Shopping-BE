@@ -3,10 +3,12 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductImage } from './product-image.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -37,6 +39,15 @@ export class Product {
   @Column('text', { array: true, default: () => "'{}'" })
   tags: string[];
 
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+    eager: true,
+  })
+  images?: ProductImage[];
+
+  @ManyToOne(() => User, (user) => user.product, { eager: true })
+  user: User;
+
   @Column('boolean', { nullable: true, default: true })
   isActive: boolean;
 
@@ -48,12 +59,6 @@ export class Product {
 
   @Column('date', { nullable: true })
   deletedAt: Date;
-
-  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
-    cascade: true,
-    eager: true,
-  })
-  images?: ProductImage[];
 
   @BeforeInsert()
   async checkSlugInsert() {

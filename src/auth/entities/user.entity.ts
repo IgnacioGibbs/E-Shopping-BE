@@ -1,4 +1,12 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Product } from 'src/products/entities';
 
 @Entity('users')
 export class User {
@@ -50,14 +58,34 @@ export class User {
   @Column('text', { nullable: true })
   tiktok: string;
 
+  @Column('text', { array: true, default: ['user'] })
+  roles: string[];
+
+  @OneToMany(() => Product, (product) => product.user)
+  product: Product;
+
   @Column('bool', { default: false })
   isActivated: boolean;
 
-  @Column('text', { array: true, default: ['user'] })
-  roles: string[];
+  @Column('date', { default: () => 'CURRENT_TIMESTAMP', nullable: true })
+  createdAt: Date;
+
+  @Column('date', { nullable: true })
+  updatedAt: Date;
+
+  @Column('date', { nullable: true })
+  deletedAt: Date;
 
   @BeforeInsert()
   emailToLowerCase() {
     this.email = this.email.toLowerCase();
+  }
+  InsertTimestamp() {
+    this.createdAt = new Date();
+  }
+
+  @BeforeUpdate()
+  updateTimestamp() {
+    this.updatedAt = new Date();
   }
 }
