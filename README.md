@@ -4,31 +4,31 @@
 
 # E-Shopping API
 
-1. Clonar el repositorio
+1. Clone the repository
 
-2. Instalar las dependencias
+2. Install the dependencies
 
 ```bash
 npm install
 ```
 
-3. Clonar el archivo ___env.template__ y renombrarlo a __.env__
+3. Clone the ___env.template__ file and rename it to __.env__
 
-4. Cambiar las variables de entorno
+4. Change environment variables
 
-5. Levantar la base de datos
+5. Raise the database
 
 ```bash
 docker-compose up -d
 ```
 
-6. Levantar el servidor en desarrollo
+6. Raise the development server
 
 ```bash
 npm run start:dev
 ```
 
-7. Ejecutar SEED
+7. Run SEED
   
   ```bash
   http://localhost:3000/api/seed
