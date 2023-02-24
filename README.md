@@ -33,3 +33,19 @@ npm run start:dev
   ```bash
   http://localhost:3000/api/seed
   ```
+
+8. You can use the API with this ADMIN user:
+  
+  ```bash
+  email:admin@admin.com
+  password:admin@admin.com
+  ```
+
+  Or an plain user:
+  
+  ```bash
+  email:user@user.com
+  password:user@user.com
+  ```
+
+  If you want to create a new user, feel free to do it.
