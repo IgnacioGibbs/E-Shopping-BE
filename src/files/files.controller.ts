@@ -14,8 +14,10 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { FilesService } from './files.service';
 
+@ApiTags('Files - Get and Upload Product Images')
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}

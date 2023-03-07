@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductService } from './product.service';
-import { ProductController } from './product.controller';
+import { ProductService } from './products.service';
+import { ProductController } from './products.controller';
 import { Product, ProductImage } from './entities';
 import { AuthModule } from 'src/auth/auth.module';
 
