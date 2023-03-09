@@ -65,6 +65,8 @@ export class Product {
   tags: string[];
 
   @ApiProperty({
+    type: () => [ProductImage],
+    isArray: true,
     example: '[ image1.jpg, image2.jpg ]',
     description: 'Product images',
     default: [],
