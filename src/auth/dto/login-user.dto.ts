@@ -29,9 +29,9 @@ export class LoginUserDto {
   @IsString()
   @MinLength(6)
   @MaxLength(18)
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
     message:
-      'The password must have a Uppercase, lowercase letter and a number',
+      'Password is too week. Passwords will contain at least 1 upper case letter, 1 lower case letter and 1 number or special character',
   })
   password: string;
 }
