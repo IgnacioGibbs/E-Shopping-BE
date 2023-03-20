@@ -39,9 +39,6 @@ export class MessagesWsService {
   }
 
   getUserById(socketId: string) {
-    console.log(this.connectedUsers[socketId]);
-    console.log('.user.name', this.connectedUsers[socketId].user.name);
-
     return this.connectedUsers[socketId].user.name;
   }
 
